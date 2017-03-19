@@ -1,0 +1,71 @@
+<html>
+ <head>
+	<!-- styles put here, but you can include a CSS file and reference it instead! -->
+	 <style type="text/css">
+		html, body { height: 100%; margin: 0; padding: 0; }
+	  	#map { height: 100%; }
+	 </style>
+</head>
+<body>
+	<div id="map"></div>
+	<script type="text/javascript">
+		var map;
+
+		var markers = [];
+
+		function initMap() {
+			map = new google.maps.Map(document.getElementById('map'), {
+				center: {lat: 40.74135, lng: -73.99802},
+				zoom: 10
+			});
+
+			var locations = [
+				{title: '1', position: {lat: 40.74135, lng: -73.99802}},
+				{title: '2', position: {lat: 40.64135, lng: -73.89802}},
+				{title: '3', position: {lat: 40.54135, lng: -73.79802}},
+				{title: '4', position: {lat: 40.44135, lng: -73.69802}},
+				{title: '5', position: {lat: 40.34135, lng: -73.59802}},
+				{title: '6', position: {lat: 40.14135, lng: -73.49802}},
+			];
+
+			var commonInfoWindow = new google.maps.InfoWindow();
+			var bounds = new google.maps.LatLngBounds();
+
+			for (var i = locations.length - 1; i >= 0; i--) {
+				var location = locations[i];
+
+				var marker = new google.maps.Marker({
+					position: location.position,
+					map: map,
+					title: location.title
+				});
+
+				markers.push(marker);
+				bounds.extend(marker.position);
+
+				marker.addListener('click', function() {
+					papulateInfoWindow(this, commonInfoWindow);
+
+				});
+			}
+
+			map.fitBounds(bounds);
+		}
+
+
+
+		function papulateInfoWindow(marker, infowindow) {
+			if(infowindow.marker != marker) {
+				infowindow.marker = marker;
+				infowindow.setContent('<div>' + marker.title + '</div>');
+				infowindow.open(map, marker);
+				infowindow.addListener('closeclick', function() {
+					infowindow.marker = null;
+				});
+			}
+		}
+ 	</script>
+	<!--TODO: Insert your API Key in the below call to load the API.-->
+	<script async defer src="https://maps.googleapis.com/maps/api/js?v=3&key=your_key&callback=initMap"></script>
+</body>
+</html>
