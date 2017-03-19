@@ -1,19 +1,36 @@
 <html>
  <head>
-	<!-- styles put here, but you can include a CSS file and reference it instead! -->
 	 <style type="text/css">
 		html, body { height: 100%; margin: 0; padding: 0; }
-	  	#map { height: 100%; }
+	  	#map { height: 80%; }
+	  	#hide { height: 10%; }
+	  	#show { height: 10%; }
+	  	
 	 </style>
 </head>
 <body>
 	<div id="map"></div>
+	<input id="hide" type="button" value="hide"/>
+	<input id="show" type="button" value="show"/>
+
 	<script type="text/javascript">
 		var map;
 
 		var markers = [];
 
 		function initMap() {
+
+			document.getElementById('hide').addEventListener('click', function() {
+				for (var i = markers.length - 1; i >= 0; i--) {
+					markers[i].setMap(null);
+				}
+			});
+
+			document.getElementById('show').addEventListener('click', function() {
+				for (var i = markers.length - 1; i >= 0; i--) {
+					markers[i].setMap(map);
+				}
+			});
 			map = new google.maps.Map(document.getElementById('map'), {
 				center: {lat: 40.74135, lng: -73.99802},
 				zoom: 10
